@@ -1,6 +1,5 @@
-# Colocar o computador a gerar um numero aleatorio entre 1 e 6
+# Colocar o computador a gerar um numero aleatorio entre 1 e 6, dar ao utilizador 3 chances para acertar.
 import random
-
 
 numero_aleatorio = random.randint(1, 6)
 qtd_tentativa = 0
