@@ -70,17 +70,17 @@ def atualizar_utilizador():
     cnx.close()
 
 # DELETE - Apagar utilizador
-    def apagar_utilizador():
-        id_utilizador = input("Qual ID do utilizador que você deseja DELETAR?")
+def apagar_utilizador(): # =============== PROBLEMA AQUI =============
+    id_utilizador = input("Qual ID do utilizador que você deseja DELETAR?")
             
-        cnx = ligar_bd()
-        cursor = cnx.cursor()
+    cnx = ligar_bd()
+    cursor = cnx.cursor()
 
-        sql = "DELETE FROM utilizadores WHERE id = %s;"
-        cursor.execute(sql, (id_utilizador))
-        cnx.commit()
+    sql = "DELETE FROM utilizadores WHERE id = %s"
+    cursor.execute(sql, (id_utilizador))
+    cnx.commit()
 
-    print("Utilizador ATUALIZADO com sucesso!")
+    print("Utilizador APAGADO com sucesso!")
 
     cursor.close()
     cnx.close()
