@@ -15,6 +15,7 @@
 body {
     background-color: #f5f6fa; /* fundo suave */
     display: flex;
+    flex-direction: column;
     justify-content: center; /* centraliza horizontalmente */
     align-items: center;     /* centraliza verticalmente */
     height: 100vh;           /* altura total da tela */
@@ -99,5 +100,12 @@ a {
 
 a:hover {
     color: #2f3640;
+}
+
+.register {
+    margin: 30px 0 0 0;
+}
+.register a {
+    margin: 5px;
 }
 

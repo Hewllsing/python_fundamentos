@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     
     <!-- O título da página é dinâmico e recebido pelo Flask -->
-    <title>Login</title> <!-- Para ficar dinamico {{ titulo }} -->
+    <title>Registrar</title> <!-- Para ficar dinamico {{ titulo }} -->
 
     
     <!-- Link para o CSS -->
@@ -15,7 +15,7 @@
 <body>
 
     <!-- Título principal da página - também dinâmico -->
-    <h1>Login</h1>
+    <h1>Registrar</h1>
 
     {% with msgs = get_flashed_messages() %}
         {% if msgs %}
@@ -51,8 +51,6 @@
         <a href="/">Cancelar</a>
     
     </form>
-    
-    <p class="register">Ainda não possui um cadastro? <a href="/Projeto/meu_crud_web/templates/register.html"> Inscreva-se agora! </a></p>
 
 </body>
 

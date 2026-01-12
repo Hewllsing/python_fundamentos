@@ -86,6 +86,41 @@ def novo():
 
 
 # ---------------------------------------------------
+# Rota para criar novo Login // PRECISO TERMINAR
+# ---------------------------------------------------
+
+@app.route("/register", methods=["GET", "POST"])
+def novo():
+    # Proteger a página
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        # Receber dados do formulário
+        username = request.form["username"]
+        password = request.form["password"]
+
+        # Inserir no banco
+        cnx = ligar_bd()
+        cursor = cnx.cursor()
+        cursor.execute(
+            "INSERT INTO utilizador (username, password) VALUES (%s, %s)", 
+            (username, password)
+        )
+        cnx.commit()
+
+        cursor.close()
+        cnx.close()
+
+        # Redirecionar para a página principal
+        return redirect("/")
+
+    # Se GET, exibir formulário vazio
+    return render_template("form.html", titulo="Novo utilizador", utilizador=None)
+
+
+
+# ---------------------------------------------------
 # Rota para editar utilizador
 # ---------------------------------------------------
 @app.route("/editar/<int:id>", methods=["GET", "POST"])
