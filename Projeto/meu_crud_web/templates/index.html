@@ -1,21 +1,8 @@
-<!doctype html>
-<html lang="pt">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="utf-8">
-    <title>Lista de Utilizadores</title>
-
-    <!-- Link para o CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-</head>
-
-<body>
-
+{% block content %}
     <!-- Título principal da página -->
     <h1>Lista de Utilizadores</h1>
-
-    <!-- Link para a página de novo utilizador -->
-    <p><a href="/novo">+ Novo utilizador</a></p>
 
     <!-- Tabela que apresenta os utilizadores vindos da base de dados -->
     <table border="1" cellpadding="6">
@@ -52,7 +39,4 @@
         <!-- Fim do loop -->
 
     </table>
-
-</body>
-
-</html>
+{% endblock %}

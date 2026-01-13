@@ -106,3 +106,34 @@ td a {
 td a:hover {
     background-color: #4cd137;
 }
+
+.selecionar-visualizacao {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 15px 0;
+}
+.selecionar-visualizacao {
+    color: #273c75;
+}
+
+.btn-visualizacao {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+
+
+}
+.btn-visualizacao p {
+    margin: 5px 10px;
+}
+
+.btn-logout {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    
+}
+.btn-logout a {
+    color: #c23616;
+}

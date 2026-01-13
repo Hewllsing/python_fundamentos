@@ -1,0 +1,1 @@
+inserir botoes na pagina index com rotas para sua devida pagina: utilizadores(mostrar form), metereologia(mostrar metereologia), moedas(mostrar cotacoes)

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    <title>Base</title>
+
+    <!-- Link para o CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+</head>
+
+<body>
+    <section class="btn-logout">
+        {% if "user_id" in session: %}
+            <p>
+               <strong>Logged as: </strong>  {{ session.username }} 
+                <br>
+                <a href="{{ url_for('logout') }}"> Logout</a> 
+            </p>
+        {% endif %}
+    </section>
+    
+    
+    <!-- Título principal da página -->
+    <h1>Base</h1> 
+
+    {% block content %} {% endblock %} <!-- Traz corpos html para renderizar aqui -->
+
+    <section class="selecionar-visualizacao">
+        <h3>Selecione o que deseja fazer: </h3>
+        <!-- Link para a página de novo utilizador -->
+        <p><a href="/novo">+ Novo utilizador</a></p>
+
+
+        <section class="btn-visualizacao">   
+            <p><a href="{{ url_for('index') }}">Utilizadores</a></p>
+            <p><a href="{{ url_for('metereologia') }}">Metereologia</a></p>
+            <p><a href="{{ url_for('cotacao') }}">Moedas</a></p> 
+        </section>
+
+    </section>
+
+</body>
+
+</html>

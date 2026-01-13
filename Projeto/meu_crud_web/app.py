@@ -25,12 +25,21 @@ def ligar_bd():
 # Inicialização do Flask
 # ---------------------------------------------------
 app = Flask(__name__)
+app.secret_key = os.urandom(24)  # Chave secreta para a sessão
 
 
+@app.route("/")
+def base():
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    
+    return render_template("base.html") 
+
+    
 # ---------------------------------------------------
 # Rota principal (lista utilizadores)
 # ---------------------------------------------------
-@app.route("/")
+@app.route("/index")
 def index():
     # Proteger a página: só permite acesso se o utilizador estiver logado
     if "user_id" not in session:
@@ -51,6 +60,20 @@ def index():
     # Renderizar o template com os utilizadores
     return render_template("index.html", utilizadores=utilizadores)
 
+
+@app.route("/metereologia", methods=["GET", "POST"])
+def metereologia():
+        # Proteger a página: só permite acesso se o utilizador estiver logado
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    return render_template("weather.html")
+
+@app.route("/cotacao", methods=["GET", "POST"])
+def cotacao():
+        # Proteger a página: só permite acesso se o utilizador estiver logado
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+    return render_template("money.html")
 
 # ---------------------------------------------------
 # Rota para criar novo utilizador
@@ -90,21 +113,35 @@ def novo():
 # ---------------------------------------------------
 
 @app.route("/register", methods=["GET", "POST"])
-def novo():
-    # Proteger a página
-    if "user_id" not in session:
-        return redirect(url_for("login"))
-
+def registrar_usuario():
+    
     if request.method == "POST":
-        # Receber dados do formulário
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username")
+        password = request.form.get("password")
 
-        # Inserir no banco
+        if not username or not password:
+            flash("Preencha todos os campos!")
+            return redirect(url_for("registrar_usuario"))
+
+        # Conectar ao banco
         cnx = ligar_bd()
         cursor = cnx.cursor()
+
+        # Verificar se o usuário já existe
         cursor.execute(
-            "INSERT INTO utilizador (username, password) VALUES (%s, %s)", 
+            "SELECT id FROM login WHERE username = %s", (username,)
+        )
+        existe = cursor.fetchone()
+
+        if existe:
+            flash("Este nome de usuário já está em uso!")
+            cursor.close()
+            cnx.close()
+            return redirect(url_for("registrar_usuario"))
+
+        # Inserir novo usuário
+        cursor.execute(
+            "INSERT INTO login (username, password) VALUES (%s, %s)",
             (username, password)
         )
         cnx.commit()
@@ -112,12 +149,10 @@ def novo():
         cursor.close()
         cnx.close()
 
-        # Redirecionar para a página principal
-        return redirect("/")
+        flash("Conta criada com sucesso! Faça login.")
+        return redirect(url_for("login"))
 
-    # Se GET, exibir formulário vazio
-    return render_template("form.html", titulo="Novo utilizador", utilizador=None)
-
+    return render_template("register.html")
 
 
 # ---------------------------------------------------
@@ -184,7 +219,6 @@ def deleta_utilizador(id):
 # ---------------------------------------------------
 # Login
 # ---------------------------------------------------
-app.secret_key = os.urandom(24)  # Chave secreta para a sessão
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -208,7 +242,7 @@ def login():
         if user and user["password"] == password:
             session["user_id"] = user["id"]
             session["username"] = user["username"]
-            return redirect(url_for("index"))
+            return redirect(url_for("base"))
         else:
             flash("Username ou password incorretos.")
             return redirect(url_for("login"))
