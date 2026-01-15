@@ -2,6 +2,64 @@
 
 {% block content %} 
 
-<h1> COTACAO </h1>
+<!doctype html>
+<html lang="pt">
 
+<head>
+    <meta charset="utf-8">
+
+    <!-- O título da página é dinâmico e recebido pelo Flask -->
+    <title>Cotação de moedas</title> <!-- Para ficar dinamico {{ titulo }} -->
+
+
+    <!-- Link para o CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='weather.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Título principal da página - também dinâmico -->
+    <h1>Cotação de moedas</h1>
+
+    {% with msgs = get_flashed_messages() %}
+    {% if msgs %}
+    <ul>
+        {% for m in msgs %}
+        <li> {{ m }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+
+    <section class="container-search">
+        <!-- Formulário enviado via método POST -->
+        <form method="post">
+
+            {% if usd_brl %}
+            <p>USD BRL: R$: {{ usd_brl }} </p>
+            {% endif %}
+
+            {% if eur_brl %} 
+            <p>EUR BRL: R$: {{ eur_brl }} </p>
+            {% endif %}
+
+            {% if error %}
+            <p style="color:red;">{{ error }}</p>
+            {% endif %}
+            
+
+            <br><br>
+            <!-- Botão para enviar os dados -->
+            <button type="submit">Buscar</button>
+
+            <!-- Link para voltar à página inicial sem salvar -->
+            <a href="/">Cancelar</a>
+
+        </form>
+    </section>
+</body>
 {% endblock %} 
+</html>
+

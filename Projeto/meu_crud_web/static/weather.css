@@ -1,0 +1,107 @@
+/* -----------------------------------------
+   RESET
+----------------------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* -----------------------------------------
+   BODY
+----------------------------------------- */
+.content-weather {
+    background-color: #f0f0f0;
+
+    padding-top: 40px;
+}
+
+/* -----------------------------------------
+   TÍTULO
+----------------------------------------- */
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* -----------------------------------------
+   FORMULÁRIO
+----------------------------------------- */
+form {
+    background-color: #fff;
+    width: 350px;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin: auto;
+}
+
+/* -----------------------------------------
+   INPUTS
+----------------------------------------- */
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* -----------------------------------------
+   BOTÃO
+----------------------------------------- */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #273c75 !important;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #3b78c2;
+}
+
+/* -----------------------------------------
+   LINK VOLTAR
+----------------------------------------- */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 12px;
+    color: #444;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* -----------------------------------------
+   RESULTADOS DO CLIMA
+----------------------------------------- */
+p {
+    margin-top: 10px;
+    text-align: center;
+    color: #333;
+    font-size: 15px;
+}
+
+p.error {
+    color: red;
+    font-weight: bold;
+}
+.container-search {
+    max-width: 500px;
+    height: 400px;
+    margin: auto;
+    align-content: center;
+}

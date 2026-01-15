@@ -2,6 +2,66 @@
 
 {% block content %} 
 
-<h1>METEREOLOGIA</h1>
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    
+    <!-- O título da página é dinâmico e recebido pelo Flask -->
+    <title>Login</title> <!-- Para ficar dinamico {{ titulo }} -->
+
+    
+    <!-- Link para o CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='weather.css') }}">
+    
+</head>
+
+<body class="content-weather">
+
+    <!-- Título principal da página - também dinâmico -->
+    <h1>Temperatura Metereologica</h1>
+
+    {% with msgs = get_flashed_messages() %}
+        {% if msgs %}
+            <ul>
+                {% for m in msgs %}
+                    <li> {{ m }}</li>
+                    {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+    <section class="container-search">
+        <!-- Formulário enviado via método POST -->
+        <form method="post">
+
+            <!-- Campo de cidade-->
+            <p>
+                Cidade:<br>
+                <!-- Preenche automaticamente caso seja edição (opcional) -->
+                <input type="text" name="cidade" required value="{{ cidade if cidade else '' }}">
+                    
+            </p>
+
+            <!-- Botão para enviar os dados -->
+            <button type="submit">Buscar</button>
+
+            <!-- Link para voltar à página inicial sem salvar -->
+            <a href="/">Cancelar</a>
+
+            {% if temperature %}
+                <p>Temperatura: {{ temperature }} ºC</p>
+            {% endif %}
+
+            {% if error %}
+                <p style="color:red;">{{ error }}</p>
+            {% endif %}
+        
+        </form>
+    </section>
+</body>
+
+</html>
+
 
 {% endblock %} 

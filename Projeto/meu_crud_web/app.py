@@ -4,7 +4,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 import mysql.connector
 import os
-
+import requests
+import json
 
 # ---------------------------------------------------
 # Função para ligar à base de dados MySQL
@@ -63,17 +64,66 @@ def index():
 
 @app.route("/metereologia", methods=["GET", "POST"])
 def metereologia():
-        # Proteger a página: só permite acesso se o utilizador estiver logado
     if "user_id" not in session:
         return redirect(url_for("login"))
-    return render_template("weather.html")
+
+    temperature = None
+    error = None
+    cidade = None
+
+    if request.method == "POST":
+        cidade = request.form.get("cidade")
+
+        if cidade:
+            API_KEY = "3689129ee7af0fa500cad990971aecd6"
+            link = f"https://api.openweathermap.org/data/2.5/weather?q={cidade}&appid={API_KEY}&lang=pt_br"
+
+            requisicao = requests.get(link)
+            requisicao_dic = requisicao.json()
+
+            if requisicao_dic.get("cod") != 200:
+                error = "Cidade não encontrada"
+            else:
+                kelvin = requisicao_dic["main"]["temp"]
+                temperature = round(kelvin - 273.15, 2)
+
+    return render_template("weather.html", temperature=temperature, cidade=cidade, error=error)
+
 
 @app.route("/cotacao", methods=["GET", "POST"])
 def cotacao():
-        # Proteger a página: só permite acesso se o utilizador estiver logado
     if "user_id" not in session:
         return redirect(url_for("login"))
-    return render_template("money.html")
+
+    usd_brl = None
+    eur_brl = None
+    error = None
+
+    if request.method == "POST":
+
+        link = "https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL"
+
+        try:
+            requisicao = requests.get(link)
+
+            # Verificar se a requisição HTTP retornou com sucesso
+            if requisicao.status_code != 200:
+                error = "Erro ao contactar API."
+            else:
+                dados = requisicao.json()
+
+                # Verificando se os dados esperados existem
+                if "USDBRL" in dados and "EURBRL" in dados:
+                    usd_brl = dados["USDBRL"]["bid"]
+                    eur_brl = dados["EURBRL"]["bid"]
+                else:
+                    error = "Dados não encontrados na resposta da API."
+
+        except Exception as e:
+            error = "Erro inesperado ao buscar dados."
+
+    return render_template("money.html", usd_brl=usd_brl, eur_brl=eur_brl, error=error)
+
 
 # ---------------------------------------------------
 # Rota para criar novo utilizador

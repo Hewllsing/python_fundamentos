@@ -115,6 +115,7 @@ td a:hover {
 }
 .selecionar-visualizacao {
     color: #273c75;
+    align-items: center;
 }
 
 .btn-visualizacao {

@@ -1,4 +1,5 @@
 import requests
+import json
 
 # Faz a requisição via link da API
 cotacoes = requests.get("https://economia.awesomeapi.com.br/last/USD-BRL,EUR-BRL,BTC-BRL")
