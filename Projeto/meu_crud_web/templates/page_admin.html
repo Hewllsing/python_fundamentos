@@ -2,27 +2,25 @@
 
 {% block content %}
     <!-- Título principal da página -->
-    <h1>Lista de Utilizadores</h1>
+    <h1>Lista de usuários</h1>
 
     <!-- Tabela que apresenta os utilizadores vindos da base de dados -->
     <table border="1" cellpadding="6">
         <tr>
             <!-- Cabeçalho da tabela -->
             <th>ID</th>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Criado em</th>
-            <th>Ações</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Administrar</th>
         </tr>
 
         <!-- Loop Jinja2 que percorre todos os utilizadores enviados pelo Flask -->
-        {% for u in utilizadores %}
+        {% for u in usuarios %}
         <tr>
             <!-- Cada coluna recebe um valor do dicionário retornado pelo SELECT -->
             <td>{{ u.id }}</td>
-            <td>{{ u.nome }}</td>
-            <td>{{ u.email }}</td>
-            <td>{{ u.created_at }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.role }}</td>
             
             <!-- Coluna das ações (editar/apagar) -->
             <td>

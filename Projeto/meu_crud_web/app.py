@@ -62,6 +62,29 @@ def index():
     return render_template("index.html", utilizadores=utilizadores)
 
 
+@app.route("/page_admin")
+def page_admin():
+    # Proteger a página: só permite acesso se o utilizador estiver logado
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    # Conectar à base de dados
+    cnx = ligar_bd()
+    cursor = cnx.cursor(dictionary=True)
+
+    # Buscar todos os utilizadores
+    cursor.execute("SELECT id, username, role FROM login ORDER BY id DESC")
+    usuarios = cursor.fetchall()
+
+    # Fechar cursor e conexão
+    cursor.close()
+    cnx.close()
+
+    # Renderizar o template com os utilizadores
+    return render_template("page_admin.html", usuarios=usuarios)
+
+
+
 @app.route("/metereologia", methods=["GET", "POST"])
 def metereologia():
     if "user_id" not in session:
@@ -244,6 +267,42 @@ def editar_utilizador(id):
     return render_template("form.html", titulo="Editar utilizador", utilizador=utilizador)
 
 
+@app.route("/editar_admin/<int:id>", methods=["GET", "POST"])
+def editar_admin_utilizador(id):
+    # Proteger a página
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    cnx = ligar_bd()
+    cursor = cnx.cursor(dictionary=True)
+
+    if request.method == "POST":
+        username = request.form["username"]
+        role = request.form["role"]
+
+        # Atualizar dados no banco
+        cursor2 = cnx.cursor()
+        cursor2.execute(
+            "UPDATE login SET username = %s, role = %s WHERE id = %s", 
+            (username, role, id)
+        )
+        cnx.commit()
+        cursor2.close()
+
+        cursor.close()
+        cnx.close()
+        return redirect("/")
+
+    # Se GET, buscar dados do utilizador para preencher o formulário
+    cursor.execute("SELECT id, username, role FROM login WHERE id = %s", (id,))
+    usuarios = cursor.fetchone()
+
+    cursor.close()
+    cnx.close()
+
+    return render_template("page_edit_admin.html", usuarios=usuarios)
+
+
 # ---------------------------------------------------
 # Rota para apagar utilizador
 # ---------------------------------------------------
@@ -281,7 +340,7 @@ def login():
 
         # Verificar se o utilizador existe
         cursor.execute(
-            "SELECT id, username, password FROM login WHERE username = %s", (username,)
+            "SELECT id, username, password, role FROM login WHERE username = %s", (username,)
         )
         user = cursor.fetchone()
 
@@ -292,6 +351,7 @@ def login():
         if user and user["password"] == password:
             session["user_id"] = user["id"]
             session["username"] = user["username"]
+            session["user_role"] = user["role"]
             return redirect(url_for("base"))
         else:
             flash("Username ou password incorretos.")

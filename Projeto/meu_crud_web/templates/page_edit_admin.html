@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+    <meta charset="utf-8">
+    
+    <!-- O título da página é dinâmico e recebido pelo Flask -->
+    <title>Editar role</title>
+
+    <!-- Link para o CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='form.css') }}">
+    
+</head>
+
+<body>
+
+    <!-- Título principal da página - também dinâmico -->
+    <h1>Editar role</h1>
+
+    <!-- Formulário enviado via método POST -->
+    <form method="post">
+
+        <!-- Campo do nome -->
+        <p>
+            Usuário:<br>
+
+            <!-- O value é preenchido automaticamente se estivermos a editar -->
+            <input type="text" name="username" required 
+                value="{{ usuarios.username if usuarios else '' }}">
+        </p>
+
+        <!-- Campo do email -->
+        <p>
+            Role:<br>
+
+            <!-- Igual ao nome: preenche automaticamente quando em edição -->
+            <input type="text" name="role" required
+                value="{{ usuarios.role if usuarios else '' }}">
+        </p>
+
+        <!-- Botão para enviar os dados -->
+        <button type="submit">Guardar</button>
+
+        <!-- Link para voltar à página inicial sem salvar -->
+        <a href="/">Cancelar</a>
+
+    </form>
+
+</body>
+
+</html>
