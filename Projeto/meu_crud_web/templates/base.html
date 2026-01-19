@@ -13,7 +13,9 @@
     <section class="btn-logout">
         {% if "user_id" in session: %}
             <p>
-                <strong>Logged as: </strong>  {{ session.username }} 
+                <strong>Logged: </strong>  {{ session.username }} 
+                <br>
+                <strong>Role: </strong> {{ session.user_role }}
                 <br>
                 <a href="{{ url_for('logout') }}"> Logout</a> 
             </p>
